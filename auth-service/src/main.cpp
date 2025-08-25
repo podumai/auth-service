@@ -1,5 +1,6 @@
 #include <auth_service/handlers/v1/register_handler.hpp>
 #include <userver/clients/dns/component.hpp>
+#include <userver/clients/http/component.hpp>
 #include <userver/components/fs_cache.hpp>
 #include <userver/components/minimal_server_component_list.hpp>
 #include <userver/server/handlers/http_handler_static.hpp>
@@ -14,6 +15,7 @@ auto main(
 ) -> int
 {
   auto component_list{userver::components::MinimalServerComponentList()
+                        .Append<userver::components::HttpClient>()
                         .Append<userver::clients::dns::Component>()
                         .Append<userver::server::handlers::Ping>()
                         .Append<userver::components::Postgres>("auth-db")
