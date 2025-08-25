@@ -2,7 +2,7 @@
   "name": "auth-service",
   "image": "ghcr.io/userver-framework/ubuntu-22.04-userver-pg-dev:latest",
 
-  "remoteUser": "root",
+  "remoteUser": "user",
   "containerEnv": {
     "SHELL": "/bin/bash",
     "CCACHE_CONFIGPATH": "/home/user/auth-service/.ccache/ccache.conf",
