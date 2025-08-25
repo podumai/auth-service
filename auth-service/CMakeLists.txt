@@ -15,11 +15,11 @@ target_sources(
       FILE_SET handler_lib_headers
       TYPE HEADERS
       BASE_DIRS
-        "${CMAKE_SOURCE_DIR}/include"
+        "${CMAKE_CURRENT_SOURCE_DIR}/include"
       FILES
-        "${CMAKE_SOURCE_DIR}/include/auth_service/handlers/v1/register_handler.hpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/include/auth_service/handlers/v1/register_handler.hpp"
     PRIVATE
-      "${CMAKE_CURRENT_SOURCE_DIR}/handlers/v1/register_handler.cpp"
+      "${CMAKE_CURRENT_SOURCE_DIR}/src/handlers/v1/register_handler.cpp"
 )
 target_compile_features(
   HANDLER_LIB
@@ -52,11 +52,11 @@ target_sources(
       FILE_SET server_headers
       TYPE HEADERS
       BASE_DIRS
-        "${CMAKE_SOURCE_DIR}/include/"
+        "${CMAKE_CURRENT_SOURCE_DIR}/include/"
       FILES
-        "${CMAKE_SOURCE_DIR}/include/auth_service/handlers/v1/register_handler.hpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/include/auth_service/handlers/v1/register_handler.hpp"
     PRIVATE
-      "${CMAKE_SOURCE_DIR}/src/main.cpp"
+      "${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp"
 )
 target_compile_features(
   SERVER
@@ -71,7 +71,7 @@ set_target_properties(
     OUTPUT_NAME
       "server-pg"
     RUNTIME_OUTPUT_DIRECTORY
-      "${CMAKE_CURRENT_BINARY_DIR}/../bin"
+      "${CMAKE_CURRENT_BINARY_DIR}/bin"
 )
 target_link_libraries(
   SERVER
