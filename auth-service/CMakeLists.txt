@@ -1,3 +1,80 @@
-cmake_minimum_required(VERSION 3.30)
-project(PG_CACHE VERSION 0.0.1 LANGUAGES CXX)
-add_subdirectory(src)
+find_package(
+  userver
+  COMPONENTS
+    core
+    postgresql
+  REQUIRED
+)
+
+set(HANDLER_LIB)
+set(handler_lib_headers)
+add_library(HANDLER_LIB)
+target_sources(
+  HANDLER_LIB
+    PRIVATE
+      FILE_SET handler_lib_headers
+      TYPE HEADERS
+      BASE_DIRS
+        "${CMAKE_SOURCE_DIR}/include"
+      FILES
+        "${CMAKE_SOURCE_DIR}/include/auth_service/handlers/v1/register_handler.hpp"
+    PRIVATE
+      "${CMAKE_CURRENT_SOURCE_DIR}/handlers/v1/register_handler.cpp"
+)
+target_compile_features(
+  HANDLER_LIB
+    PRIVATE
+      cxx_std_23
+    PUBLIC
+      cxx_std_17
+)
+set_target_properties(
+  HANDLER_LIB
+  PROPERTIES
+    OUTPUT_NAME
+      "libhandlers"
+    RUNTIME_OUTPUT_DIRECTORY
+      "${CMAKE_SOURCE_DIR}/lib"
+)
+target_link_libraries(
+  HANDLER_LIB
+    PUBLIC
+      userver::core
+      userver::postgresql
+)
+
+set(SERVER)
+set(server_headers)
+add_executable(SERVER)
+target_sources(
+  SERVER
+    PRIVATE
+      FILE_SET server_headers
+      TYPE HEADERS
+      BASE_DIRS
+        "${CMAKE_SOURCE_DIR}/include/"
+      FILES
+        "${CMAKE_SOURCE_DIR}/include/auth_service/handlers/v1/register_handler.hpp"
+    PRIVATE
+      "${CMAKE_SOURCE_DIR}/src/main.cpp"
+)
+target_compile_features(
+  SERVER
+    PRIVATE
+      cxx_std_23
+    PUBLIC
+      cxx_std_17
+)
+set_target_properties(
+  SERVER
+  PROPERTIES
+    OUTPUT_NAME
+      "server-pg"
+    RUNTIME_OUTPUT_DIRECTORY
+      "${CMAKE_CURRENT_BINARY_DIR}/../bin"
+)
+target_link_libraries(
+  SERVER
+    PRIVATE
+      HANDLER_LIB
+)
