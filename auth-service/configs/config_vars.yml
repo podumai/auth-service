@@ -1,0 +1,5 @@
+listener-port: 8080
+grpc-port: 8081
+monitor-port: 8082
+
+auth-db-uri: 'postgresql://auth-backend:cct5VZto1GJkIiuBDU57v5cRKTioDFctz2oLoRA3CAUeLk2EY3/localhost:5432/auth_service_db'

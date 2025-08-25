@@ -1,0 +1,115 @@
+config_vars: /home/user/auth-service/auth-service/configs/config_vars.yml
+
+components_manager:
+    coro_pool:
+        initial_size: 100
+        max_size: 1000
+    
+    event_thread_pool:
+        threads: 2
+#        thread_name: event-worker
+    
+    task_processors:
+        main-task-processor:
+            thread_name: main-worker
+            worker_threads: 16
+            spinning-iterations: 500
+            task-processor-queue: work-stealing-task-queue
+        
+        monitor-task-processor:
+            thread_name: monitor-worker
+            worker_threads: 2
+            os-scheduling: low-priority
+            task-processor-queue: global-task-queue
+        
+        fs-task-processor:
+            thread_name: fs-worker
+            worker_threads: 2
+            os-scheduling: low-priority
+            task-processor-queue: global-task-queue
+        
+        bg-task-processor:
+            thread_name: bg-worker
+            worker_threads: 2
+            os-scheduling: idle
+            task-processor-queue: global-task-queue
+        
+    default_task_processor: main-task-processor
+
+    components:
+        manager-controller:
+
+        server:
+            listener:
+                port: $listener-port
+                task_processor: main-task-processor
+            
+            listener-monitor:
+                port: $monitor-port
+                task_processor: monitor-task-processor
+        
+        logging:
+            fs-task-processor: fs-task-processor
+            loggers:
+                default:
+                    file_path: '@stderr'
+                    format: tskv
+                    overflow_behavior: discard
+
+        fs-cache-main:
+            dir: /workspaces/auth-service/auth-service/static/
+            fs-task-processor: fs-task-processor
+            update-period: 10s
+
+        handler-static:
+            fs-cache-component: fs-cache-main
+            path: /*
+            method: GET
+        
+        http-client:
+            pool-statistics-disable: true
+            thread-name-prefix: http-client
+            threads: 2
+            fs-task-processor: fs-task-processor
+            user-agent: auth-service
+            testsuite-enabled: true
+            testsuite-timeout: 5s
+            testsuite-allowed-url-prefixes: ['http://localhost:8083/']
+        
+        dns-client:
+            fs-task-processor: fs-task-processor
+            hosts-file-path: /etc/hosts
+            hosts-file-update-interval: 10m
+        
+        testsuite-support:
+            testsuite-pg-execute-timeout: 300ms
+            testsuite-pg-statement-timeout: 300ms
+            cache-update-execution: concurrent
+        
+        handler-ping:
+            path: /ping
+            task_processor: main-task-processor
+            method: GET,HEAD
+            max_request_size: 256
+            max_headers_size: 256
+            url_trailing_slash: strict-match
+            request_body_size_log_limit: 128
+            response_data_size_log_limit: 128
+            decompress_request: false
+            throttling_enabled: false
+            set-response-server-hostname: false
+            log-level: WARNING
+        
+        handler-register-user:
+            path: /api/v1/register
+            task_processor: main-task-processor
+            method: PUT
+            url_trailing_slash: strict-match
+            request_body_size_log_limit: 128
+            response_data_size_log_limit: 128
+            decompress_request: false
+            log-level: WARNING
+        
+        auth-db:
+            dbconnection: $auth-db-uri
+            blocking_task_processor: fs-task-processor
