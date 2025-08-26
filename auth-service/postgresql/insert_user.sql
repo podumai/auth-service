@@ -1,0 +1,1 @@
+INSERT INTO auth.users (uid, username, passwd, email, register_date) VALUES ($1, $2, $3, $4, $5);
