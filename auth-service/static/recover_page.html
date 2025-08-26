@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reset Password | Account Recovery</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            padding: 20px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            text-align: center;
+        }
+        
+        .header {
+            background: #4a6de5;
+            padding: 35px 20px;
+            text-align: center;
+            color: white;
+        }
+        
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 18px;
+        }
+        
+        .form-container {
+            padding: 35px;
+        }
+        
+        .instructions {
+            text-align: left;
+            background: #f0f7ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border-left: 4px solid #4a6de5;
+        }
+        
+        .instructions h3 {
+            color: #4a6de5;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .instructions p {
+            color: #555;
+            line-height: 1.6;
+        }
+        
+        .input-group {
+            margin-bottom: 25px;
+            position: relative;
+            text-align: left;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #333;
+            font-size: 16px;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 16px 20px 16px 50px;
+            border: 2px solid #e1e5eb;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        .input-group input:focus {
+            outline: none;
+            border-color: #4a6de5;
+            box-shadow: 0 0 0 3px rgba(74, 109, 229, 0.2);
+        }
+        
+        .input-group i {
+            position: absolute;
+            left: 20px;
+            top: 47px;
+            color: #777;
+            font-size: 18px;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 16px;
+            background: #4a6de5;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+        
+        .btn:hover {
+            background: #3a5bd0;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(74, 109, 229, 0.3);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .links {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 25px;
+            font-size: 16px;
+        }
+        
+        .links a {
+            color: #4a6de5;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .links a:hover {
+            text-decoration: underline;
+            color: #3a5bd0;
+        }
+        
+        .success-message {
+            display: none;
+            background: #d4edda;
+            color: #155724;
+            padding: 16px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: center;
+            border-left: 4px solid #28a745;
+        }
+        
+        .error-message {
+            color: #e74c3c;
+            font-size: 14px;
+            margin-top: 8px;
+            text-align: left;
+            display: none;
+        }
+        
+        .steps {
+            display: flex;
+            justify-content: space-between;
+            margin: 30px 0;
+            position: relative;
+        }
+        
+        .steps::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #e1e5eb;
+            z-index: 1;
+        }
+        
+        .step {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: white;
+            border: 2px solid #e1e5eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #777;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .step.active {
+            background: #4a6de5;
+            border-color: #4a6de5;
+            color: white;
+        }
+        
+        .step-label {
+            position: absolute;
+            top: 45px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            color: #777;
+            white-space: nowrap;
+        }
+        
+        .step-container {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+        }
+        
+        .step-container:first-child {
+            align-items: flex-start;
+        }
+        
+        .step-container:last-child {
+            align-items: flex-end;
+        }
+        
+        @media (max-width: 576px) {
+            .container {
+                border-radius: 15px;
+            }
+            
+            .form-container {
+                padding: 25px;
+            }
+            
+            .header {
+                padding: 25px 15px;
+            }
+            
+            .header h1 {
+                font-size: 28px;
+            }
+            
+            .links {
+                flex-direction: column;
+                gap: 15px;
+                align-items: center;
+            }
+            
+            .step-label {
+                font-size: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Reset Your Password</h1>
+            <p>We'll help you get back into your account</p>
+        </div>
+        
+        <div class="form-container">
+            <div class="steps">
+                <div class="step-container">
+                    <div class="step active">1</div>
+                    <div class="step-label">Verify Email</div>
+                </div>
+                <div class="step-container">
+                    <div class="step">2</div>
+                    <div class="step-label">Security Check</div>
+                </div>
+                <div class="step-container">
+                    <div class="step">3</div>
+                    <div class="step-label">New Password</div>
+                </div>
+            </div>
+            
+            <div class="instructions">
+                <h3><i class="fas fa-info-circle"></i> Instructions</h3>
+                <p>Enter your email address associated with your account, and we'll send you a link to reset your password.</p>
+            </div>
+            
+            <form id="forgotPasswordForm">
+                <div class="input-group">
+                    <label for="email">Email Address</label>
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="email" placeholder="Enter your email address" required>
+                    <div class="error-message" id="emailError">Please enter a valid email address</div>
+                </div>
+                
+                <button type="submit" class="btn">Send Reset Link</button>
+            </form>
+            
+            <div class="success-message" id="successMessage">
+                <i class="fas fa-check-circle"></i> Success! Check your email for a password reset link.
+            </div>
+            
+            <div class="links">
+                <a href="http://localhost:10000/"><i class="fas fa-arrow-left"></i> Back to Login</a>
+                <a href="http://localhost:10000/static/404.html"><i class="fas fa-question-circle"></i> Need Help?</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('forgotPasswordForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            
+            if (!emailPattern.test(email)) {
+                document.getElementById('emailError').style.display = 'block';
+                return;
+            }
+            
+            // Hide error message if shown
+            document.getElementById('emailError').style.display = 'none';
+            
+            // In a real application, you would send a request to your server here
+            // For demonstration, we'll show a success message
+            document.getElementById('successMessage').style.display = 'block';
+            
+            // Simulate loading
+            const btn = document.querySelector('.btn');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                btn.innerHTML = 'Send Reset Link';
+                btn.disabled = false;
+            }, 2000);
+        });
+        
+        // Add focus effects to input
+        const emailInput = document.getElementById('email');
+        const emailIcon = document.querySelector('.fa-envelope');
+        
+        emailInput.addEventListener('focus', () => {
+            emailIcon.style.color = '#4a6de5';
+        });
+        
+        emailInput.addEventListener('blur', () => {
+            emailIcon.style.color = '#777';
+        });
+    </script>
+</body>
+</html>

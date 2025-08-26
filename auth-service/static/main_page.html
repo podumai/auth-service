@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile | Account Management</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            margin-bottom: 30px;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: white;
+        }
+        
+        .logo span {
+            color: #ffcc00;
+        }
+        
+        .user-actions {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background: #4a6de5;
+            color: white;
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            background: #3a5bd0;
+            transform: translateY(-2px);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+        
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .profile-container {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 30px;
+        }
+        
+        @media (max-width: 900px) {
+            .profile-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .profile-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .profile-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid #4a6de5;
+            margin-bottom: 20px;
+        }
+        
+        .profile-name {
+            font-size: 28px;
+            color: #4a6de5;
+            margin-bottom: 10px;
+        }
+        
+        .profile-title {
+            color: #777;
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        
+        .profile-stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 25px 0;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 24px;
+            font-weight: 700;
+            color: #4a6de5;
+        }
+        
+        .stat-label {
+            color: #777;
+            font-size: 14px;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            background: #4a6de5;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+        
+        .social-link:hover {
+            transform: translateY(-3px);
+        }
+        
+        .info-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f2f5;
+        }
+        
+        .card-title {
+            font-size: 22px;
+            color: #4a6de5;
+        }
+        
+        .info-group {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        
+        .info-label {
+            width: 150px;
+            font-weight: 600;
+            color: #555;
+        }
+        
+        .info-value {
+            flex: 1;
+            color: #333;
+        }
+        
+        .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .skill {
+            background: #e8f4ff;
+            color: #4a6de5;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+        
+        .activity-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #f0f2f5;
+        }
+        
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+        
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e8f4ff;
+            color: #4a6de5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 18px;
+        }
+        
+        .activity-content {
+            flex: 1;
+        }
+        
+        .activity-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .activity-time {
+            color: #777;
+            font-size: 14px;
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+        
+        .tab {
+            padding: 12px 25px;
+            background: #e8f4ff;
+            color: #4a6de5;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+        
+        .tab.active {
+            background: #4a6de5;
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+            
+            .info-group {
+                flex-direction: column;
+            }
+            
+            .info-label {
+                width: 100%;
+                margin-bottom: 5px;
+            }
+        }
+        
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            color: white;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">Profile<span>Hub</span></div>
+            <div class="user-actions">
+                <a href="#" class="btn btn-outline"><i class="fas fa-bell"></i></a>
+                <a href="#" class="btn btn-outline"><i class="fas fa-cog"></i></a>
+                <a href="#" class="btn btn-primary">Edit Profile</a>
+            </div>
+        </header>
+        
+        <div class="profile-container">
+            <!-- Left Column -->
+            <div class="left-column">
+                <div class="profile-card">
+                    <h2 class="profile-name">Unknown User</h2>
+                    <p class="profile-title">Senior UX Designer</p>
+                    <p>Unknown</p>
+                    
+                    <div class="profile-stats">
+                        <div class="stat">
+                            <div class="stat-number">247</div>
+                            <div class="stat-label">Connections</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">32</div>
+                            <div class="stat-label">Projects</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">18</div>
+                            <div class="stat-label">Reviews</div>
+                        </div>
+                    </div>
+                    
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-dribbble"></i></a>
+                    </div>
+                    
+                    <a href="#" class="btn btn-primary" style="width: 100%; margin-top: 20px;">Contact Me</a>
+                </div>
+                
+                <div class="info-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Achievements</h3>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-title">Top Designer 2023</div>
+                            <div class="activity-time">Awarded by Design Association</div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-medal"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-title">Best UX Project</div>
+                            <div class="activity-time">UX Design Awards</div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-award"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-title">Employee of the Year</div>
+                            <div class="activity-time">TechCorp Inc. 2022</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Column -->
+            <div class="right-column">
+                <div class="info-card">
+                    <div class="tabs">
+                        <div class="tab active" data-tab="about">About</div>
+                        <div class="tab" data-tab="experience">Experience</div>
+                        <div class="tab" data-tab="education">Education</div>
+                    </div>
+                    
+                    <div class="tab-content active" id="about">
+                        <div class="card-header">
+                            <h3 class="card-title">Personal Information</h3>
+                        </div>
+                        
+                        <div class="info-group">
+                            <div class="info-label">Full Name</div>
+                            <div class="info-value">blank</div>
+                        </div>
+                        
+                        <div class="info-group">
+                            <div class="info-label">Email</div>
+                            <div class="info-value">blank</div>
+                        </div>
+                        
+                        <div class="info-group">
+                            <div class="info-label">Phone</div>
+                            <div class="info-value">blank</div>
+                        </div>
+                        
+                        <div class="info-group">
+                            <div class="info-label">Location</div>
+                            <div class="info-value">blank</div>
+                        </div>
+                        
+                        <div class="info-group">
+                            <div class="info-label">Date of Birth</div>
+                            <div class="info-value">blank</div>
+                        </div>
+                        
+                        <div class="card-header" style="margin-top: 30px;">
+                            <h3 class="card-title">Bio</h3>
+                        </div>
+                        
+                        <p>Experienced UX designer with over 8 years in the industry, passionate about creating intuitive and beautiful user experiences. Specialized in user research, interaction design, and prototyping. Currently working at TechCorp Inc., leading a team of designers on enterprise products.</p>
+                        
+                        <div class="card-header" style="margin-top: 30px;">
+                            <h3 class="card-title">Skills</h3>
+                        </div>
+                        
+                        <div class="skills-container">
+                            <div class="skill">User Research</div>
+                            <div class="skill">Wireframing</div>
+                            <div class="skill">Prototyping</div>
+                            <div class="skill">UI Design</div>
+                            <div class="skill">Figma</div>
+                            <div class="skill">Adobe XD</div>
+                            <div class="skill">User Testing</div>
+                            <div class="skill">Design Systems</div>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content" id="experience">
+                        <div class="card-header">
+                            <h3 class="card-title">Work Experience</h3>
+                        </div>
+                        
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fas fa-briefcase"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">Senior UX Designer</div>
+                                <div class="activity-time">TechCorp Inc. • 2020 - Present</div>
+                                <p>Lead designer for enterprise SaaS products. Manage a team of 5 designers.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fas fa-briefcase"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">UX Designer</div>
+                                <div class="activity-time">DesignStudio • 2016 - 2020</div>
+                                <p>Designed mobile and web applications for various clients in fintech and e-commerce.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fas fa-briefcase"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">Junior Designer</div>
+                                <div class="activity-time">WebSolutions • 2014 - 2016</div>
+                                <p>Created wireframes and prototypes for client websites and applications.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content" id="education">
+                        <div class="card-header">
+                            <h3 class="card-title">Education</h3>
+                        </div>
+                        
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">Master of Design in Interaction Design</div>
+                                <div class="activity-time">Stanford University • 2012 - 2014</div>
+                            </div>
+                        </div>
+                        
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">Bachelor of Arts in Graphic Design</div>
+                                <div class="activity-time">California College of the Arts • 2008 - 2012</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="grid-2">
+                    <div class="info-card">
+                        <div class="card-header">
+                            <h3 class="card-title">Languages</h3>
+                        </div>
+                        
+                        <div class="info-group">
+                            <div class="info-label">English</div>
+                            <div class="info-value">Native</div>
+                        </div>
+                        
+                        <div class="info-group">
+                            <div class="info-label">Spanish</div>
+                            <div class="info-value">Fluent</div>
+                        </div>
+                        
+                        <div class="info-group">
+                            <div class="info-label">Mandarin</div>
+                            <div class="info-value">Intermediate</div>
+                        </div>
+                    </div>
+                    
+                    <div class="info-card">
+                        <div class="card-header">
+                            <h3 class="card-title">Interests</h3>
+                        </div>
+                        
+                        <div class="skills-container">
+                            <div class="skill">Photography</div>
+                            <div class="skill">Hiking</div>
+                            <div class="skill">Reading</div>
+                            <div class="skill">Travel</div>
+                            <div class="skill">Cooking</div>
+                            <div class="skill">Music</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>© 2023 ProfileHub • All rights reserved</p>
+        </footer>
+    </div>
+
+    <script>
+        // Tab functionality
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs and content
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                // Add active class to clicked tab and corresponding content
+                tab.classList.add('active');
+                document.getElementById(tab.dataset.tab).classList.add('active');
+            });
+        });
+        
+        // Simulate loading time
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                document.body.classList.add('loaded');
+            }, 500);
+        });
+    </script>
+</body>
+</html>

@@ -1,13 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            height: 100dvh;
+            font-size: 16px;
+            font-family: Poppins, sans-serif;
+            background: rgb(235, 235, 235);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+        .T404 {
+            font-size: 8em;
+            color: #000;
+            fill: #000;
+        }
+        .bug {
+            width: 0.85em;
+            margin: 0 1.75.rem;
+        }
+        .paragraph {
+            font-weight: 600;
+            letter-spacing: 2px;
+            width: 40%;
+        }
+        .paragraph h2 {
+            margin: 10px 0;
+        }
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+                justify-content: center;
+            }
+            .T404 {
+                font-size: 5em;
+            }
+            .paragraph {
+                width: 100%;
+                padding: 1.2rem;
+                margin-bottom: 0.5rem;
+            }
+        }
+        @media (max-width: 412px) {
+            .bug {
+                margin: 0;
+            }
+            .T404 {
+                font-size: 4em;
+            }
+        }
+        @media (max-width: 300px) {
+            .T404 {
+                font-size: 3em;
+            }
+        }
+    </style>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Page 404 Bug</title>
-    <!--Style-->
-    <link rel="stylesheet" href="Bug/assets/style.css">
 </head>
 <body>
 <section class="T404">

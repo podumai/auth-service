@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirecting... | Please Wait</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            text-align: center;
+            padding: 40px 30px;
+        }
+        
+        .loader-container {
+            margin: 25px 0;
+        }
+        
+        .loader {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .loader-circle {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: conic-gradient(transparent, #4a6de5);
+            animation: rotate 1.2s linear infinite;
+            position: relative;
+        }
+        
+        .loader-circle::after {
+            content: '';
+            position: absolute;
+            inset: 8px;
+            background: white;
+            border-radius: 50%;
+        }
+        
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        h1 {
+            color: #4a6de5;
+            margin-bottom: 15px;
+            font-size: 32px;
+        }
+        
+        p {
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            color: #555;
+        }
+        
+        .countdown {
+            font-size: 48px;
+            font-weight: 700;
+            color: #4a6de5;
+            margin: 20px 0;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            margin: 30px 0;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #4a6de5, #6a11cb);
+            border-radius: 4px;
+            animation: progress 3s linear forwards;
+        }
+        
+        @keyframes progress {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+        
+        .destination {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #4a6de5;
+        }
+        
+        .destination h3 {
+            color: #4a6de5;
+            margin-bottom: 10px;
+        }
+        
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background: #4a6de5;
+            color: white;
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            background: #3a5bd0;
+            transform: translateY(-2px);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: #4a6de5;
+            border: 2px solid #4a6de5;
+        }
+        
+        .btn-outline:hover {
+            background: #f0f3ff;
+            transform: translateY(-2px);
+        }
+        
+        .info-box {
+            background: #e8f4ff;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 25px;
+            text-align: left;
+            border-left: 4px solid #2575fc;
+        }
+        
+        .info-box h3 {
+            color: #2575fc;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .info-box ul {
+            list-style: none;
+            padding-left: 10px;
+        }
+        
+        .info-box li {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        
+        .info-box i {
+            color: #2575fc;
+            margin-top: 5px;
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 25px 20px;
+                border-radius: 15px;
+            }
+            
+            h1 {
+                font-size: 28px;
+            }
+            
+            p {
+                font-size: 16px;
+            }
+            
+            .countdown {
+                font-size: 36px;
+            }
+            
+            .btn-container {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="loader-container">
+            <div class="loader">
+                <div class="loader-circle"></div>
+            </div>
+        </div>
+        
+        <h1>Redirecting You</h1>
+        
+        <p>You are being automatically redirected to the requested page. Please wait a moment.</p>
+        
+        <div class="countdown" id="countdown">3</div>
+        
+        <div class="progress-bar">
+            <div class="progress"></div>
+        </div>
+        
+        <div class="destination">
+            <h3><i class="fas fa-arrow-right"></i> Destination</h3>
+            <p>Sign in Page</p>
+        </div>
+        
+        <div class="btn-container">
+            <a href="#" class="btn btn-primary">Proceed Now</a>
+            <a href="#" class="btn btn-outline">Cancel Redirect</a>
+        </div>
+        
+        <div class="info-box">
+            <h3><i class="fas fa-info-circle"></i> Why am I seeing this page?</h3>
+            <ul>
+                <li><i class="fas fa-check-circle"></i> You initiated an action that requires redirection</li>
+                <li><i class="fas fa-check-circle"></i> We're verifying your authentication status</li>
+                <li><i class="fas fa-check-circle"></i> We're ensuring a secure connection</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Countdown timer
+        let seconds = 3;
+        const countdownElement = document.getElementById('countdown');
+        
+        function updateCountdown() {
+            countdownElement.textContent = seconds;
+            seconds--;
+            
+            if (seconds < 0) {
+                // In a real scenario, this would redirect to the target URL
+                window.location.href = "http://localhost:10000/"; // Replace with actual URL
+            } else {
+                setTimeout(updateCountdown, 1000);
+            }
+        }
+        
+        // Start the countdown
+        setTimeout(updateCountdown, 1000);
+        
+        // Add interactive functionality to buttons
+        document.querySelector('.btn-primary').addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = "#dashboard"; // Replace with actual URL
+        });
+        
+        document.querySelector('.btn-outline').addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = "#cancel"; // Replace with actual URL
+        });
+    </script>
+</body>
+</html>
