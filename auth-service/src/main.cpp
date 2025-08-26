@@ -1,4 +1,7 @@
-#include <auth_service/handlers/v1/register_handler.hpp>
+#include <auth_service/handlers/v1/register_user_handler.hpp>
+#include <auth_service/handlers/v1/remove_user_handler.hpp>
+#include <auth_service/handlers/v1/login_user_handler.hpp>
+#include <auth_service/handlers/http/resource_handler.hpp>
 #include <userver/clients/dns/component.hpp>
 #include <userver/clients/http/component.hpp>
 #include <userver/components/fs_cache.hpp>
@@ -12,14 +15,16 @@
 auto main(
   int argc,  //
   char* argv[]
-) -> int
-{
+) -> int {
   auto component_list{userver::components::MinimalServerComponentList()
+                        .Append<auth_service::http::ResourceHandler>()
                         .Append<userver::components::HttpClient>()
                         .Append<userver::clients::dns::Component>()
                         .Append<userver::server::handlers::Ping>()
                         .Append<userver::components::Postgres>("auth-db")
-                        .Append<auth_service::api::v1::RegisterHandler>()
+                        .Append<auth_service::api::v1::RegisterUserHandler>()
+                        .Append<auth_service::api::v1::LoginUserHandler>()
+                        .Append<auth_service::api::v1::RemoveUserHandler>()
                         .Append<userver::components::FsCache>("fs-cache-main")
                         .Append<userver::server::handlers::HttpHandlerStatic>()
                         .Append<userver::components::TestsuiteSupport>()};
