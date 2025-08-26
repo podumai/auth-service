@@ -6,6 +6,23 @@ find_package(
   REQUIRED
 )
 
+set(PREPARED_SQL)
+userver_add_sql_library(
+  PREPARED_SQL
+  NAMESPACE
+    auth_service
+  OUTPUT_DIR
+    "${CMAKE_CURRENT_BINARY_DIR}/postgresql"
+  SQL_FILES
+    "${CMAKE_CURRENT_SOURCE_DIR}/postgresql/*.sql"
+)
+set_target_properties(
+  PREPARED_SQL
+    PROPERTIES
+      OUTPUT_NAME
+        "prepared_sql"
+)
+
 set(HANDLER_LIB)
 set(handler_lib_headers)
 add_library(HANDLER_LIB)
@@ -17,9 +34,15 @@ target_sources(
       BASE_DIRS
         "${CMAKE_CURRENT_SOURCE_DIR}/include"
       FILES
-        "${CMAKE_CURRENT_SOURCE_DIR}/include/auth_service/handlers/v1/register_handler.hpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/include/auth_service/handlers/v1/register_user_handler.hpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/include/auth_service/handlers/v1/login_user_handler.hpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/include/auth_service/handlers/v1/remove_user_handler.hpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/include/auth_service/handlers/http/resource_handler.hpp"
     PRIVATE
-      "${CMAKE_CURRENT_SOURCE_DIR}/src/handlers/v1/register_handler.cpp"
+      "${CMAKE_CURRENT_SOURCE_DIR}/src/handlers/v1/register_user_handler.cpp"
+      "${CMAKE_CURRENT_SOURCE_DIR}/src/handlers/v1/login_user_handler.cpp"
+      "${CMAKE_CURRENT_SOURCE_DIR}/src/handlers/v1/remove_user_handler.cpp"
+      "${CMAKE_CURRENT_SOURCE_DIR}/src/handlers/resource_handler.cpp"
 )
 target_compile_features(
   HANDLER_LIB
@@ -32,15 +55,15 @@ set_target_properties(
   HANDLER_LIB
   PROPERTIES
     OUTPUT_NAME
-      "libhandlers"
-    RUNTIME_OUTPUT_DIRECTORY
-      "${CMAKE_SOURCE_DIR}/lib"
+      "handlers"
 )
 target_link_libraries(
   HANDLER_LIB
     PUBLIC
       userver::core
       userver::postgresql
+    PRIVATE
+      PREPARED_SQL
 )
 
 set(SERVER)
@@ -54,7 +77,8 @@ target_sources(
       BASE_DIRS
         "${CMAKE_CURRENT_SOURCE_DIR}/include/"
       FILES
-        "${CMAKE_CURRENT_SOURCE_DIR}/include/auth_service/handlers/v1/register_handler.hpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/include/auth_service/handlers/v1/register_user_handler.hpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/include/auth_service/handlers/v1/remove_user_handler.hpp"
     PRIVATE
       "${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp"
 )
@@ -69,7 +93,7 @@ set_target_properties(
   SERVER
   PROPERTIES
     OUTPUT_NAME
-      "server-pg"
+      "auth-pg"
     RUNTIME_OUTPUT_DIRECTORY
       "${CMAKE_CURRENT_BINARY_DIR}/bin"
 )
