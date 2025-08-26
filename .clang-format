@@ -29,7 +29,7 @@ BraceWrapping:
   SplitEmptyFunction: false
   SplitEmptyRecord: false
   SplitEmptyNamespace: false
-BreakAfterAttributes: Always
+BreakAfterAttributes: Never # Always
 BreakConstructorInitializers: BeforeComma
 BreakFunctionDefinitionParameters: true
 BreakInheritanceList: BeforeComma
@@ -56,7 +56,7 @@ RequiresClausePosition: OwnLine
 RequiresExpressionIndentation: OuterScope
 SpaceAfterCStyleCast: true
 SpaceAfterTemplateKeyword: false
-SpaceBeforeCaseColon: true
+SpaceBeforeCaseColon: false
 SpaceBeforeParens: Custom
 SpaceBeforeParensOptions:
   AfterControlStatements: true
