@@ -1,5 +1,3 @@
-config_vars: /home/user/auth-service/auth-service/configs/config_vars.yml
-
 components_manager:
     coro_pool:
         initial_size: 100
@@ -7,7 +5,6 @@ components_manager:
     
     event_thread_pool:
         threads: 2
-#        thread_name: event-worker
     
     task_processors:
         main-task-processor:
@@ -41,11 +38,13 @@ components_manager:
 
         server:
             listener:
-                port: $listener-port
+                address: 127.0.0.1
+                port: 10000
                 task_processor: main-task-processor
             
             listener-monitor:
-                port: $monitor-port
+                address: 127.0.0.1
+                port: 10001
                 task_processor: monitor-task-processor
         
         logging:
@@ -57,7 +56,7 @@ components_manager:
                     overflow_behavior: discard
 
         fs-cache-main:
-            dir: /workspaces/auth-service/auth-service/static/
+            dir: '/workspaces/auth-service/auth-service/static'
             fs-task-processor: fs-task-processor
             update-period: 10s
 
@@ -100,10 +99,35 @@ components_manager:
             set-response-server-hostname: false
             log-level: WARNING
         
+        handler-resources:
+            path: /static/{subpath}
+            task_processor: main-task-processor
+            method: GET
+        
         handler-register-user:
             path: /api/v1/register
             task_processor: main-task-processor
-            method: PUT
+            method: POST
+            url_trailing_slash: strict-match
+            request_body_size_log_limit: 128
+            response_data_size_log_limit: 128
+            decompress_request: false
+            log-level: WARNING
+
+        handler-login-user:
+            path: /api/v1/login
+            task_processor: main-task-processor
+            method: GET
+            url_trailing_slash: strict-match
+            request_body_size_log_limit: 128
+            response_data_size_log_limit: 128
+            decompress_request: false
+            log-level: WARNING
+        
+        handler-remove-user:
+            path: /users/{uid}
+            task_processor: main-task-processor
+            method: DELETE
             url_trailing_slash: strict-match
             request_body_size_log_limit: 128
             response_data_size_log_limit: 128
@@ -111,5 +135,5 @@ components_manager:
             log-level: WARNING
         
         auth-db:
-            dbconnection: $auth-db-uri
+            dbconnection: 'postgresql://auth-backend:cct5VZto1GJkIiuBDU57v5cRKTioDFctz2oLoRA3CAUeLk2EY3@localhost:5432/auth_service_db'
             blocking_task_processor: fs-task-processor
