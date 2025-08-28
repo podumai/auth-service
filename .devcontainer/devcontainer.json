@@ -3,6 +3,14 @@
   "image": "ghcr.io/userver-framework/ubuntu-22.04-userver-pg-dev:latest",
 
   "remoteUser": "user",
+  "workspaceFolder": "/home/user/auth-service",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/home/user/auth-service,type=bind",
+  "runArgs": [
+    "--cap-add=SYS_PTRACE",
+    "--security-opt",
+    "seccomp=unconfined",
+    "--network=host"
+  ],
   "containerEnv": {
     "SHELL": "/bin/bash",
     "CCACHE_CONFIGPATH": "/home/user/auth-service/.ccache/ccache.conf",
@@ -10,16 +18,11 @@
   },
 
   "forwardPorts": [
-    8080,
-    8082
+    8080
   ],
   "portsAttributes": {
     "8080": {
       "label": "Port for HTTP connections",
-      "onAutoForward": "notify"
-    },
-    "8082": {
-      "label": "Port for gRPC client connections",
       "onAutoForward": "notify"
     }
   },
