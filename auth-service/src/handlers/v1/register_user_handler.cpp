@@ -1,3 +1,4 @@
+#include <auth_service/error.hpp>
 #include <auth_service/handlers/v1/register_user_handler.hpp>
 #include <auth_service/sql_queries.hpp>
 #include <userver/crypto/crypto.hpp>
@@ -6,22 +7,6 @@
 #include <userver/storages/postgres/io/bytea.hpp>
 #include <userver/utils/boost_uuid4.hpp>
 #include <userver/utils/datetime.hpp>
-
-namespace
-{
-
-[[nodiscard]] auto MakeResponseErrorMessage(
-  userver::http::StatusCode status_code,  //
-  std::string_view error_message
-) -> userver::formats::json::Value
-{
-  userver::formats::json::ValueBuilder builder;
-  builder["code"] = std::to_underlying(status_code);
-  builder["message"] = error_message;
-  return builder.ExtractValue();
-}
-
-}  // namespace
 
 namespace auth_service::api::v1
 {
@@ -70,12 +55,14 @@ auto RegisterUserHandler::HandleRequestJsonThrow(
   catch (const userver::formats::json::MemberMissingException& member_error)
   {
     request.SetResponseStatus(userver::http::StatusCode::kBadRequest);
-    return MakeResponseErrorMessage(userver::http::StatusCode::kBadRequest, member_error.GetMessage());
+    return error::MakeResponseErrorMessage(
+      userver::http::StatusCode::kBadRequest, member_error.GetMessage()
+    );
   }
   catch (const userver::storages::postgres::IntegrityConstraintViolation& contraint_error)
   {
     request.SetResponseStatus(userver::http::StatusCode::kConflict);
-    return MakeResponseErrorMessage(
+    return error::MakeResponseErrorMessage(
       userver::http::StatusCode::kConflict, contraint_error.GetServerMessage().GetDetail()
     );
   }

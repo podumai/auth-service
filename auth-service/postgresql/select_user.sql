@@ -1,1 +1,1 @@
-SELECT u.uid, u.register_date FROM auth.users u WHERE u.username = $1 AND u.passwd = $2;
+SELECT u.uid, u.role FROM auth.users u WHERE u.username = $1 AND u.passwd = $2;

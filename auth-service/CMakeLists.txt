@@ -38,11 +38,13 @@ target_sources(
         "${CMAKE_CURRENT_SOURCE_DIR}/include/auth_service/handlers/v1/login_user_handler.hpp"
         "${CMAKE_CURRENT_SOURCE_DIR}/include/auth_service/handlers/v1/remove_user_handler.hpp"
         "${CMAKE_CURRENT_SOURCE_DIR}/include/auth_service/handlers/http/resource_handler.hpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/include/auth_service/error.hpp"
     PRIVATE
       "${CMAKE_CURRENT_SOURCE_DIR}/src/handlers/v1/register_user_handler.cpp"
       "${CMAKE_CURRENT_SOURCE_DIR}/src/handlers/v1/login_user_handler.cpp"
       "${CMAKE_CURRENT_SOURCE_DIR}/src/handlers/v1/remove_user_handler.cpp"
       "${CMAKE_CURRENT_SOURCE_DIR}/src/handlers/resource_handler.cpp"
+      "${CMAKE_CURRENT_SOURCE_DIR}/src/error.cpp"
 )
 target_compile_features(
   HANDLER_LIB

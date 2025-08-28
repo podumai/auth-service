@@ -1,7 +1,7 @@
+#include <auth_service/handlers/http/resource_handler.hpp>
+#include <auth_service/handlers/v1/login_user_handler.hpp>
 #include <auth_service/handlers/v1/register_user_handler.hpp>
 #include <auth_service/handlers/v1/remove_user_handler.hpp>
-#include <auth_service/handlers/v1/login_user_handler.hpp>
-#include <auth_service/handlers/http/resource_handler.hpp>
 #include <userver/clients/dns/component.hpp>
 #include <userver/clients/http/component.hpp>
 #include <userver/components/fs_cache.hpp>
@@ -15,7 +15,8 @@
 auto main(
   int argc,  //
   char* argv[]
-) -> int {
+) -> int
+{
   auto component_list{userver::components::MinimalServerComponentList()
                         .Append<auth_service::http::ResourceHandler>()
                         .Append<userver::components::HttpClient>()
