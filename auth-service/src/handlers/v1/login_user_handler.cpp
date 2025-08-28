@@ -36,7 +36,7 @@ namespace
     userver::crypto::base64::Base64UrlEncode(payload, userver::crypto::base64::Pad::kWithout)
   };
 
-  std::string signature{std::move(header_encoded) + '.' + std::move(payload_encoded)};
+  std::string signature{header_encoded + '.' + payload_encoded};
   constexpr std::string_view kSecretKey{"9G2tBHs63fvN0PdVeJ7q"};
   std::string signature_signed{
     userver::crypto::hash::HmacSha256(kSecretKey, signature, userver::crypto::hash::OutputEncoding::kBase64)
@@ -60,7 +60,7 @@ namespace
     }
   );
 
-  std::string token{std::move(signature) + '.' + std::move(signature_signed)};
+  std::string token{signature + '.' + signature_signed};
   return token;
 }
 
